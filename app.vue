@@ -67,5 +67,5 @@ const ui = {
       <UButton class="mx-1" size="xl" to="https://ui.nuxt.com" target="_blank" variant="ghost">Nuxt UI</UButton>
     </div>
   </UCard>
-  <UCommandPalette :ui="ui" :groups="groups" :autoselect="false" @update:model-value="onSelect" />
+  <CommandPalette />
 </template>
