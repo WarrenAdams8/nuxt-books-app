@@ -28,7 +28,6 @@ const groups = [{
 }]
 
 async function onSelect(option) {
-    console.log(option.id)
     await navigateTo(`/bookDetails/${option.id}`)
 }
 
@@ -55,14 +54,14 @@ const isOpen = ref(false)
 
 </script>
 <template>
-    <UButton label="Open" @click="isOpen = true" size="xl" class="m-6" />
+    <UButton label="Search" @click="isOpen = true" size="xl" variant="outline" icon="i-heroicons-magnifying-glass-20-solid" class="w-44 m-2" />
     <UModal v-model="isOpen" :ui="modalUi">
         <UCommandPalette :ui="ui" :groups="groups" :autoselect="false" @update:model-value="onSelect">
-            <template #books-command="{ command }">
+            <template #books-command="{ command }" @click="isOpen = false">
                 <article class="flex items-start space-x-6 p-6">
                     <img :src="command.img" alt="" width="60" height="88" class="flex-none rounded-md bg-slate-200" />
                     <div class="min-w-0 relative flex-auto">
-                        <h2 class="font-semibold text-primary-blue-500 truncate pr-20">{{ command.title }}</h2>
+                        <h2 class="font-semibold text-primary-blue-500 truncate pr-10">{{ command.title }}</h2>
                         <dl class="mt-2 flex flex-wrap text-sm leading-6 font-medium">
                             <div class="absolute top-0 right-0 flex items-center space-x-1">
                                 <dt class="text-book-blue-400">
