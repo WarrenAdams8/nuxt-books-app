@@ -8,7 +8,14 @@ const groups = [{
             return []
         }
 
-        const books = await $fetch('https://www.googleapis.com/books/v1/volumes', { params: { q } })
+        const books = await $fetch('https://www.googleapis.com/books/v1/volumes',
+            {
+                params: {
+                    q: q,
+                    filter: 'paid-ebooks',
+                }
+            })
+
         if (!books.items) {
             return []
         }
@@ -54,7 +61,8 @@ const isOpen = ref(false)
 
 </script>
 <template>
-    <UButton label="Search" @click="isOpen = true" size="xl" variant="outline" icon="i-heroicons-magnifying-glass-20-solid" class="w-44 m-2" />
+    <UButton label="Search" @click="isOpen = true" size="xl" variant="outline" icon="i-heroicons-magnifying-glass-20-solid"
+        class="w-44 m-2" />
     <UModal v-model="isOpen" :ui="modalUi">
         <UCommandPalette :ui="ui" :groups="groups" :autoselect="false" @update:model-value="onSelect">
             <template #books-command="{ command }" @click="isOpen = false">
@@ -97,5 +105,4 @@ const isOpen = ref(false)
                 </article>
             </template>
         </UCommandPalette>
-    </UModal>
-</template>
+    </UModal></template>

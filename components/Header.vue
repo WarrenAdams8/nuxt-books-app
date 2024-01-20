@@ -9,8 +9,12 @@
 
             <div class="flex items-center gap-1.5 justify-end">
                 <CommandPalette />
-                <UButton icon="i-heroicons-heart" size="xl" color="primary" variant="ghost" class="p-1" />
-                <UButton icon="i-heroicons-shopping-bag" size="xl" color="primary" variant="ghost" class="p-1"/>
+                <NuxtLink to="/wishlist">
+                    <UButton icon="i-heroicons-heart" size="xl" color="primary" variant="ghost" class="p-1" />
+                </NuxtLink>
+                <NuxtLink to="/checkout">
+                    <UButton icon="i-heroicons-shopping-bag" size="xl" color="primary" variant="ghost" class="p-1" />
+                </NuxtLink>
                 <UPopover mode="hover">
                     <UAvatar src="https://avatar.iran.liara.run/public/47" alt="avatar" size="md" />
                     <template #panel>
