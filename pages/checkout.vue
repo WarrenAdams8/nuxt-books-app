@@ -5,6 +5,7 @@ import { useBagStore } from '@/stores/bagStore';
 const store = useBagStore()
 
 const { bag } = storeToRefs(store)
+const { removeItemFromBag } = store
 </script>
 <template>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-2 p-10">
@@ -17,6 +18,9 @@ const { bag } = storeToRefs(store)
             <NuxtLink :to="`/bookDetails/${book.id}`">
                 <img :src="book.volumeInfo.imageLinks.thumbnail" alt="" class="mx-auto">
             </NuxtLink>
+            <template #footer>
+                <UButton label="remove" @click="removeItemFromBag(book)" color="red"/>
+            </template>
         </UCard>
     </div>
 </template>

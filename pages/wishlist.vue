@@ -5,6 +5,8 @@ import { useWishlistStore } from '@/stores/wishlistStore';
 const store = useWishlistStore()
 
 const { wishlist } = storeToRefs(store)
+
+const { removeItemFromWishlist } = store
 </script>
 <template>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-2 p-10">
@@ -17,6 +19,9 @@ const { wishlist } = storeToRefs(store)
             <NuxtLink :to="`/bookDetails/${book.id}`">
                 <img :src="book.volumeInfo.imageLinks.thumbnail" alt="" class="mx-auto">
             </NuxtLink>
+            <template #footer>
+                <UButton label="Remove" color="red" @click="removeItemFromWishlist(book)" />
+            </template>
         </UCard>
     </div>
 </template>
