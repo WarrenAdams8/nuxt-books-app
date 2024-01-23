@@ -11,7 +11,7 @@ export const useWishlistStore = defineStore(
       const isItemInWishlist = wishlist.value.findIndex(function (book) {
         return item.id == book.id;
       });
-      console.log(isItemInWishlist);
+      console.log(wishlist.value);
       if (isItemInWishlist === -1) {
         wishlist.value.push(item);
         toast.add({ title: "Added to wishlist" });
