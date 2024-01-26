@@ -12,7 +12,7 @@ export const useBagStore = defineStore(
 
       bag.value.forEach((book) => {
         total = total + book.saleInfo.listPrice.amount;
-        console.log(book.saleInfo.listPrice.amount);
+        console.log(book.saleInfo.listPrice.amount.toFixed(2) * 100);
       });
 
       return total
