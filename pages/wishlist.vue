@@ -8,22 +8,19 @@ const { removeItemFromWishlist } = store
 const client = useSupabaseClient()
 const user = useSupabaseUser()
 
-
-let { data: wishlist_items } = await useAsyncData('wishlist_items', async () => {
+let { data: wishlist_items, refresh } = await useAsyncData('wishlist_items', async () => {
     const { data, error } = await client.from('wishlist_item').select("book_info").eq("user_id", user.value.id)
 
     const items = []
     data.forEach((item) => {
         items.push(item.book_info)
     })
-    console.log(error)
 
     return items
 
 })
 
 
-//TODO:Duplicate code
 const toast = useToast()
 async function removeFromSupabase(id) {
     try {
@@ -36,22 +33,7 @@ async function removeFromSupabase(id) {
 
         toast.add({ title: "Book removed from wishlist" });
         
-
-
-        const { data: new_wishlist_items } = await useAsyncData('wishlist_items', async () => {
-            const { data, error } = await client.from('wishlist_item').select("book_info").eq("user_id", user.value.id)
-
-            const items = []
-            data.forEach((item) => {
-                items.push(item.book_info)
-            })
-            console.log(error)
-
-            return items
-
-        })
-
-        wishlist_items = new_wishlist_items
+        refresh()
 
         if (error) throw error
     } catch (error) {
@@ -63,7 +45,7 @@ async function removeFromSupabase(id) {
 
 </script>
 <template>
-    <div v-if="user.role === 'authenticated'" class="grid grid-cols-2 md:grid-cols-4 gap-2 p-10">
+    <div v-if="user" class="grid grid-cols-2 md:grid-cols-4 gap-2 p-10">
         <UCard v-for="book in wishlist_items">
             <template #header>
                 <NuxtLink :to="`/bookDetails/${book.id}`">

@@ -13,9 +13,11 @@ async function logout() {
     }
 }
 
-console.log(user.value.email)
+// console.log(user.value.email)
 </script>
 <template>
-    {{ user.email }}
-    <UButton label="logout" @click="logout" />
+    <div class="container mx-auto p-32">
+        {{ user?.email }}
+        <UButton label="logout" @click="logout" />
+    </div>
 </template>

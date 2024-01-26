@@ -4,8 +4,9 @@ import { useBagStore } from '@/stores/bagStore';
 
 const store = useBagStore()
 
-const { bag } = storeToRefs(store)
+const { bag,total } = storeToRefs(store)
 const { removeItemFromBag } = store
+
 </script>
 <template>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-2 p-10">
@@ -19,8 +20,12 @@ const { removeItemFromBag } = store
                 <img :src="book.volumeInfo.imageLinks.thumbnail" alt="" class="mx-auto">
             </NuxtLink>
             <template #footer>
-                <UButton label="remove" @click="removeItemFromBag(book)" color="red"/>
+                <UButton label="remove" @click="removeItemFromBag(book)" color="red" />
+                <p>{{ book.saleInfo.listPrice.amount }}</p>
             </template>
         </UCard>
+    </div>
+    <div>
+        <p class="text-3xl p-10">${{ total.toFixed(2) }}</p>
     </div>
 </template>

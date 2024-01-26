@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^0.5.1",
+    "@stripe/stripe-js": "^2.4.0",
     "pinia": "^2.1.7"
   }
 }

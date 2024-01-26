@@ -11,11 +11,11 @@ const toast = useToast()
 
 const route = useRoute()
 const { data, pending, error, refresh } = await useFetch(`https://www.googleapis.com/books/v1/volumes/${route.params.id}`)
-
+//TODO:Make wishlist max out at 100
+const user = useSupabaseUser()
 const supabase = useSupabaseClient()
 async function addToSupabase() {
     try {
-        const user = useSupabaseUser()
 
         const updates = {
             user_id: user.value.id,
@@ -24,12 +24,16 @@ async function addToSupabase() {
         }
 
         const { error } = await supabase.from('wishlist_item')
-        .upsert(updates, { returning: 'minimal' })
-        .eq("user_id", user.value.id)
+            .upsert(updates, { returning: 'minimal' })
+            .eq("user_id", user.value.id)
 
-        toast.add({ title: "Book added to wishlist" });
 
-        if (error) throw error
+        if (error) {
+            toast.add({ title: "Book already in wishlist" });
+            throw error
+        } else {
+            toast.add({ title: "Book added to wishlist" });
+        }
     } catch (error) {
         console.log(error.code)
     }
@@ -52,7 +56,7 @@ if (data.value.volumeInfo.description) {
 <template>
     <img class="mx-auto" :src="img" />
     <p>{{ strippedHtml }}</p>
-    <UButton label="add to supabase" class="m-4" @click="addToSupabase" />
-    <UButton label="add to wishlist" class="m-4" @click="store.addToWishlist(data)" />
+    <UButton v-if="user" label="add to supabase" class="m-4" @click="addToSupabase" />
+    <UButton v-else label="add to wishlist" class="m-4" @click="store.addToWishlist(data)" />
     <UButton label="add to bag" class="m-4" @click="BagStore.addToBag(data)" />
 </template>

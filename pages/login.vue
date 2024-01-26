@@ -48,6 +48,7 @@ async function onSignIn(event: FormSubmitEvent<Schema>) {
                 Submit
             </UButton>
         </UForm>
+        <NuxtLink to="/register">Don't have account register here</NuxtLink>
     </div>
 </template>
 

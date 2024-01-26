@@ -1,11 +1,22 @@
 import { defineStore } from "pinia";
 
+const toast = useToast();
+
 export const useBagStore = defineStore(
   "bag",
   () => {
     const bag = ref([]);
 
-    const toast = useToast();
+    const total = computed(() => {
+      let total = 0;
+
+      bag.value.forEach((book) => {
+        total = total + book.saleInfo.listPrice.amount;
+        console.log(book.saleInfo.listPrice.amount);
+      });
+
+      return total
+    });
 
     function addToBag(item) {
       const isItemInBag = bag.value.findIndex(function (book) {
@@ -27,7 +38,7 @@ export const useBagStore = defineStore(
       bag.value = newbag;
     }
 
-    return { bag, addToBag, removeItemFromBag };
+    return { bag, addToBag, removeItemFromBag, total };
   },
 
   {

@@ -1,6 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  runtimeConfig: {
+    appUrl: "http://localhost:3000",
+    stripePk:
+      "pk_test_51OctRmJMy9YqO9u2wDgKSNPE0mhaFGLLHwpaZFe7fnvpt4im8L0UlVMQ4RbAkcvHvpIFSiAHJhYNWasEWFB9loCp00DHyiHtL6",
+  },
   modules: [
     "@nuxt/ui",
     "@nuxtjs/google-fonts",
