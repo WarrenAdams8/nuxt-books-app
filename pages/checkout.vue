@@ -1,63 +1,118 @@
 <script setup>
-import { loadStripe } from '@stripe/stripe-js'
-import { useBagStore } from '@/stores/bagStore';
+
+const appId = 'sandbox-sq0idb-fvAcjNlKbbatDFMQHhwqgg';
+const locationId = 'LZTN9R52X3JCK';
 
 const store = useBagStore()
+const { total } = storeToRefs(store)
 
-const { bag, total } = storeToRefs(store)
-const { removeItemFromBag } = store
+let card;
+let paymentStatus = ref("")
 
-async function takePayment() {
-    const config = useRuntimeConfig()
-    console.log(config)
-    const stripe = await loadStripe(config.public.stripePk)
+let loading = ref(true)
+onMounted(async () => {
+    loading.value = true;
+    await initializePaymentForm();
+    loading.value = false;
+})
 
-    const lineItems = []
-    bag.value.forEach(book => {
-        lineItems.push({
-            price_data: {
-                currency: "usd",
-                unit_amount:
-                    book.saleInfo.listPrice.amount.toFixed(2) * 100,
-                product_data: {
-                    name: book.volumeInfo.title
-                }
-            },
-            quantity: 1,
-        })
-    })
-
-    console.log(lineItems)
-
-    const { error } = await stripe.redirectToCheckout({
-        lineItems: lineItems,
-        mode: 'payment',
-        successUrl: `${config.public.appUrl}/success`,
-        cancelUrl: `${config.public.appUrl}`
-    })
+const initializePaymentForm = async () => {
+    if (!Square) {
+        throw new Error("Square.js failed to load properly")
+    }
+    const payments = Square.payments(appId, locationId)
+    try {
+        card = await payments.card();
+        await card.attach("#card-container")
+    } catch (e) {
+        console.error("Initializing Card failed", e)
+        return
+    }
 }
 
+const tokenize = async (paymentMethod) => {
+    const tokenResult = await paymentMethod.tokenize();
+    if (tokenResult.status === "OK") {
+        return tokenResult.token;
+    } else {
+        let errorMessage = `Tokenization failed with status: ${tokenResult.status}`;
+        if (tokenResult.errors) {
+            errorMessage += ` and errors: ${JSON.stringify(tokenResult.errors)}`
+        }
+        throw new Error(errorMessage);
+    }
+}
+
+const handlePaymentMethodSubmission = async () => {
+    paymentStatus.value = ""
+    const token = await tokenize(card);
+    const { data, error } = await useFetch("/api/pay", {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: {
+            locationId,
+            sourceId: token,
+            total: total.value.toFixed(2) * 100,
+        }
+    })
+    if (!error.value) {
+        paymentStatus.value = "Payment completed"
+    } else {
+        paymentStatus.value = "Payment failed"
+    }
+}
+
+console.log(total.value.toFixed(2) * 100)
 
 </script>
 <template>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 p-10">
-        <UCard v-for="book in bag">
-            <template #header>
-                <NuxtLink :to="`/bookDetails/${book.id}`">
-                    <p>{{ book.volumeInfo.title }}</p>
-                </NuxtLink>
-            </template>
-            <NuxtLink :to="`/bookDetails/${book.id}`">
-                <img :src="book.volumeInfo.imageLinks.thumbnail" alt="" class="mx-auto">
-            </NuxtLink>
-            <template #footer>
-                <UButton label="remove" @click="removeItemFromBag(book)" color="red" />
-                <p>{{ book.saleInfo.listPrice.amount }}</p>
-            </template>
-        </UCard>
+    <form @submit.prevent="handlePaymentMethodSubmission">
+        <div v-if="loading">Loading...</div>
+        <div id="card-container" />
+        <button>Pay ${{ total.toFixed(2) }}</button>
+    </form>
+    <div v-if="paymentStatus" id="payment-status-container">
+        {{ paymentStatus }}
     </div>
-    <div>
-        <p class="text-3xl p-10">${{ total.toFixed(2) }}</p>
-    </div>
-    <UButton class="m-10" label="checkout" @click="takePayment" color="red" />
 </template>
+<style scoped>
+button {
+    color: #ffffff;
+    background-color: #006aff;
+    border-radius: 6px;
+    cursor: pointer;
+    border-style: none;
+    font-size: 16px;
+    line-height: 24px;
+    padding: 12px 16px;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #005fe5;
+}
+
+button:active {
+    background-color: #0055cc;
+}
+
+button:disabled {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.3);
+}
+
+#payment-status-container {
+    width: fit-content;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #ffffff;
+    background: #1a1a1a;
+    display: flex;
+    padding: 12px;
+    border-radius: 6px;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1), 0px 0px 4px rgba(0, 0, 0, 0.1);
+    margin: auto;
+    margin-top: 36px;
+}
+</style>

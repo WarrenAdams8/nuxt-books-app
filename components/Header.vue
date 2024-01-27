@@ -27,7 +27,7 @@ async function logout() {
                 <NuxtLink to="/wishlist">
                     <UButton icon="i-heroicons-heart" size="xl" color="primary" variant="ghost" class="p-1" />
                 </NuxtLink>
-                <NuxtLink to="/checkout">
+                <NuxtLink to="/bag">
                     <UButton icon="i-heroicons-shopping-bag" size="xl" color="primary" variant="ghost" class="p-1" />
                 </NuxtLink>
                 <UPopover mode="hover">
