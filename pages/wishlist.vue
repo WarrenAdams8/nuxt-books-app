@@ -49,11 +49,11 @@ async function removeFromSupabase(id) {
         <UCard v-for="book in wishlist_items">
             <template #header>
                 <NuxtLink :to="`/bookDetails/${book.id}`">
-                    <p>{{ book.volumeInfo.title }}</p>
+                    <p>{{ book.title }}</p>
                 </NuxtLink>
             </template>
             <NuxtLink :to="`/bookDetails/${book.id}`">
-                <img :src="book.volumeInfo.imageLinks.thumbnail" alt="" class="mx-auto">
+                <img :src="book.thumbnail" alt="" class="mx-auto">
             </NuxtLink>
             <template #footer>
                 <UButton label="Remove" color="red" @click="removeFromSupabase(book.id)" />
@@ -64,11 +64,11 @@ async function removeFromSupabase(id) {
         <UCard v-for="book in wishlist">
             <template #header>
                 <NuxtLink :to="`/bookDetails/${book.id}`">
-                    <p>{{ book.volumeInfo.title }}</p>
+                    <p>{{ book.title }}</p>
                 </NuxtLink>
             </template>
             <NuxtLink :to="`/bookDetails/${book.id}`">
-                <img :src="book.volumeInfo.imageLinks.thumbnail" alt="" class="mx-auto">
+                <img :src="book.thumbnail" alt="" class="mx-auto">
             </NuxtLink>
             <template #footer>
                 <UButton label="Remove" color="red" @click="removeItemFromWishlist(book)" />
