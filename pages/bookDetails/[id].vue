@@ -42,9 +42,12 @@ async function addToSupabase() {
     }
 
 }
+
 </script>
 <template>
-    <img class="mx-auto" :src="data.image" />
+    <div>
+        <img class="mx-auto py-5" :src="data.image" />
+    </div>
     <p>{{ data.description }}</p>
     <UButton v-if="user" label="add to supabase" class="m-4" @click="addToSupabase" />
     <UButton v-else label="add to wishlist" class="m-4" @click="store.addToWishlist(data)" />

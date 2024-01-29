@@ -19,6 +19,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@pinia-plugin-persistedstate/nuxt",
     "@nuxtjs/supabase",
+    "@nuxt/image",
   ],
   colorMode: {
     preference: "light",
@@ -37,4 +38,7 @@ export default defineNuxtConfig({
       exclude: [],
     },
   },
+  image: {
+    domains: ['books.google.com']
+  }
 });
