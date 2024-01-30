@@ -61,8 +61,10 @@ const isOpen = ref(false)
 
 </script>
 <template>
+    <UButton @click="isOpen = true" size="xl" variant="outline" icon="i-heroicons-magnifying-glass-20-solid"
+        class="m-2 sm:max-w-20 sm:hidden " />
     <UButton label="Search" @click="isOpen = true" size="xl" variant="outline" icon="i-heroicons-magnifying-glass-20-solid"
-        class="w-44 m-2" />
+        class="w-44 m-2 max-sm:hidden" />
     <UModal v-model="isOpen" :ui="modalUi">
         <UCommandPalette :ui="ui" :groups="groups" :autoselect="false" @update:model-value="onSelect">
             <template #books-command="{ command }" @click="isOpen = false">
@@ -105,4 +107,5 @@ const isOpen = ref(false)
                 </article>
             </template>
         </UCommandPalette>
-    </UModal></template>
+    </UModal>
+</template>

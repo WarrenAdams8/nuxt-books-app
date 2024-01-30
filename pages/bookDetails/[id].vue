@@ -43,13 +43,20 @@ async function addToSupabase() {
 
 }
 
+
 </script>
 <template>
-    <div>
-        <img class="mx-auto py-5" :src="data.image" />
+    <div id="colored-overlay">
+        <img class="mx-auto w-1/2 py-5 drop-shadow-2xl" :src="data.image" />
     </div>
-    <p>{{ data.description }}</p>
-    <UButton v-if="user" label="add to supabase" class="m-4" @click="addToSupabase" />
-    <UButton v-else label="add to wishlist" class="m-4" @click="store.addToWishlist(data)" />
-    <UButton label="add to bag" class="m-4" @click="BagStore.addToBag(data)" />
+    <div class="prose prose-h2:text-stone-500 m-4">
+        <h1>{{ data.title }}</h1>
+        <h2>{{ data.authors[0] }}</h2>
+        <p>{{ data.description }}</p>
+    </div>
+    <div class="flex justify-evenly sticky h-16 bottom-0 z-50 border-t border-book-blue-500 bg-background/75 backdrop-blur">
+        <UButton v-if="user" label="add to Wishlist" class="m-2" size="xl" @click="addToSupabase" />
+        <UButton v-else label="add to wishlist" class="m-2" size="xl" @click="store.addToWishlist(data)" />
+        <UButton label="add to bag" class="m-2" size="xl" @click="BagStore.addToBag(data)" />
+    </div>
 </template>

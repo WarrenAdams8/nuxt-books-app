@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     "@pinia-plugin-persistedstate/nuxt",
     "@nuxtjs/supabase",
     "@nuxt/image",
+    "@vueuse/nuxt"
   ],
   colorMode: {
     preference: "light",
