@@ -46,17 +46,35 @@ async function addToSupabase() {
 
 </script>
 <template>
-    <div id="colored-overlay">
-        <img class="mx-auto w-1/2 py-5 drop-shadow-2xl" :src="data.image" />
+    <div :style="{ backgroundImage: `url(${data.image})` }" id="colored-overlay" >
+        <div class="backdrop-blur-sm">
+            <img class="mx-auto w-1/2 py-5 drop-shadow-2xl" :src="data.image" />
+        </div>
     </div>
-    <div class="prose prose-h2:text-stone-500 m-4">
+    <div class="prose prose-h2:text-stone-500 m-4 text-center mx-auto">
         <h1>{{ data.title }}</h1>
         <h2>{{ data.authors[0] }}</h2>
         <p>{{ data.description }}</p>
     </div>
-    <div class="flex justify-evenly sticky h-16 bottom-0 z-50 border-t border-book-blue-500 bg-background/75 backdrop-blur">
-        <UButton v-if="user" label="add to Wishlist" class="m-2" size="xl" @click="addToSupabase" />
-        <UButton v-else label="add to wishlist" class="m-2" size="xl" @click="store.addToWishlist(data)" />
-        <UButton label="add to bag" class="m-2" size="xl" @click="BagStore.addToBag(data)" />
+    <div class="flex justify-center sticky h-16 bottom-0 z-50 border-t border-book-blue-500 bg-book-paper-50">
+        <UButton class="m-2 w-52" block size="xl" @click="BagStore.addToBag(data)">Buy ${{ data.price }}</UButton>
+        <UButton v-if="user" icon="i-heroicons-heart" variant="outline" class="m-2" size="xl" @click="addToSupabase" />
+        <UButton v-else icon="i-heroicons-heart" variant="outline" class="m-2" size="xl"
+            @click="store.addToWishlist(data)" />
     </div>
 </template>
+<style scoped>
+#colored-overlay {
+    background-size: 1px 1px;
+    background-repeat: repeat;
+    inset: 0;
+}
+
+#colored-overlay::after {
+    content: "";
+    inset: 0;
+    /* --backdrop: invert(0.2) contrast(0.8) saturate(1.7) blur(40px);
+    -webkit-backdrop-filter: var(--backdrop);
+    backdrop-filter: var(--backdrop); */
+}
+</style>

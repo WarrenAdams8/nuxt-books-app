@@ -18,7 +18,7 @@ async function logout() {
 
 </script>
 <template>
-    <nav class="sticky h-16 top-0 z-50 border-b border-book-blue-500 bg-background/75 backdrop-blur">
+    <nav class="sticky h-16 top-0 z-50 border-b border-book-blue-500 bg-book-paper-50 ">
         <div class="flex items-center justify-between mx-auto px-4 md:px-12">
             <ULink class="font-bold text-xl" to="/" active-class="text-primary-blue" inactive-class="text-primary-blue">
                 BOOKS.
